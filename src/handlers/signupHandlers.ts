@@ -3,7 +3,6 @@ import { SIGNUP } from '../graphql/mutation';
 import { notification } from 'antd';
 import axios from 'axios';
 import { validateSignup } from '../utils/validation';
-import { useNavigate } from 'react-router-dom';
 
 const cloudName = import.meta.env.VITE_CLOUD_NAME;
 const preset = import.meta.env.VITE_UPLOAD_PRESET;
@@ -16,7 +15,8 @@ export const useSignupHandlers = (
   image: string | null,
   loading: boolean,
   signup: any,
-   errorMessages: { [key: string]: string } 
+  errorMessages: { [key: string]: string },
+  navigate: Function  // Accept navigate here
 ) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -69,7 +69,6 @@ export const useSignupHandlers = (
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const navigate = useNavigate();
     const validationErrors = validateSignup(formData);
     if (Object.keys(validationErrors).length > 0) {
       setErrorMessages(validationErrors);
@@ -98,7 +97,7 @@ export const useSignupHandlers = (
         placement: 'topRight',
       });
 
-      navigate('/dashboard')
+      navigate('/dashboard');
     } catch (err: any) {
       notification.error({
         message: 'Signup Failed',

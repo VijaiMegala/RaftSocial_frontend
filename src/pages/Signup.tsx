@@ -6,6 +6,7 @@ import ProfilePicUpload from '../components/ProfilePicUpload';
 import InputField from '../components/InputField';
 import PasswordToggle from '../components/PasswordToggle';
 import 'antd/dist/reset.css';
+import { useNavigate } from 'react-router-dom';
 
 const Signup: React.FC = () => {
   const [formData, setFormData] = useState({ email: '', password: '', name: '', age: 18, description: '' });
@@ -13,13 +14,14 @@ const Signup: React.FC = () => {
   const [errorMessages, setErrorMessages] = useState<{ [key: string]: string }>({});
   const [image, setImage] = useState<string | null>(null);
   const [signup, { loading }] = useMutation(SIGNUP);
+  const navigate = useNavigate();
 
   const {
     handleInputChange,
     handleBlur,
     handleImageUpload,
     handleSubmit
-  } = useSignupHandlers(formData, setFormData, setErrorMessages, setImage, image, loading, signup, errorMessages);
+  } = useSignupHandlers(formData, setFormData, setErrorMessages, setImage, image, loading, signup, errorMessages, navigate); // Pass navigate here
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
